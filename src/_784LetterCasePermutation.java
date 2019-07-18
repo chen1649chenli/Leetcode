@@ -1,30 +1,30 @@
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class _784LetterCasePermutation {
     public List<String> letterCasePermutation(String S) {
         if (S == "" || S == null) return new ArrayList<>();
 
-        List<String> res = new ArrayList<>();
-        helper(S.toCharArray(), res, 0);
-        return res;
-    }
+        Queue<String> queue = new LinkedList();
+        queue.offer(S);
 
-    private void helper(char[] chs, List<String> list, int i){
-        if (i == chs.length) {
-            list.add(new String (chs));
-            return;
+        for (int i = 0; i < S.length(); i += 1){
+            if (Character.isDigit(S.charAt(i))) continue;
+            int size = queue.size();
+            for (int j = 0; j < size; j += 1){
+                String s = queue.poll();
+                char[] chs = s.toCharArray();
+
+                chs[i] = Character.toUpperCase(chs[i]);
+                queue.offer(String.valueOf(chs));
+
+                chs[i] = Character.toLowerCase(chs[i]);
+                queue.offer(String.valueOf(chs));
+
+            }
         }
-
-        if (chs[i] >= '0' && chs[i] <= '9'){
-            helper(chs, list, i+ 1);
-            return;
-        }
-
-        chs[i] = Character.toLowerCase(chs[i]);
-        helper(chs, list, i + 1);
-
-        chs[i] = Character.toUpperCase(chs[i]);
-        helper(chs, list, i + 1);
+        return new LinkedList<>(queue);
     }
 }
