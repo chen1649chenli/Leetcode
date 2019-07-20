@@ -2,18 +2,16 @@ import java.util.Stack;
 
 public class _1047RemoveAllAdjacentDuplicatesInString {
     public String removeDuplicates(String S) {
-        StringBuilder str = new StringBuilder();
-        Stack<Character> stack = new Stack<>();
-        for (char c : S.toCharArray()){
-            if (!stack.isEmpty() && c == stack.peek()){
-                stack.pop();
+        char[] arr = S.toCharArray();
+        int end = -1;
+
+        for (char c : arr){
+            if (end >= 0 && c == arr[end]){
+                end -= 1;
             }else{
-                stack.push(c);
+                arr[++end] = c;
             }
         }
-        while(!stack.isEmpty()){
-            str.append(stack.pop());
-        }
-        return str.reverse().toString();
+        return String.valueOf(arr, 0 , end+1);
     }
 }
