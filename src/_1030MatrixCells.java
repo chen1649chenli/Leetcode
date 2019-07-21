@@ -1,21 +1,29 @@
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 public class _1030MatrixCells {
     public int[][] allCellsDistOrder(int R, int C, int r0, int c0) {
-        int[][] ans = new int[R* C][2];
+        int[][] ans = new int[R * C][2];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{r0, c0});
+        boolean[][] visited = new boolean[R][C];
         int count = 0;
-        for (int i = 0; i < R; i += 1){
-            for (int j = 0; j < C; j += 1){
-                ans[count++] = new int[]{i, j};
+        while (!queue.isEmpty()){
+            int[] cell = queue.poll();
+            int r = cell[0], c = cell[1];
+
+            if (r >= R || r < 0 || c >= C || c < 0){
+                continue;
             }
+            if (visited[r][c]){
+                continue;
+            }
+            visited[r][c] = true;
+            ans[count++] = new int[]{r, c};
+            queue.offer(new int[]{r + 1, c});
+            queue.offer(new int[]{r - 1, c});
+            queue.offer(new int[]{r, c + 1});
+            queue.offer(new int[]{r, c - 1});
         }
-        Arrays.sort(ans, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return Math.abs(o1[0] - r0) + Math.abs(o1[1] - c0) - Math.abs(o2[0] - r0) - Math.abs(o2[1] - c0);
-            }
-        });
         return ans;
     }
 }
