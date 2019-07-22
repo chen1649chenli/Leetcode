@@ -3,22 +3,13 @@ import java.util.Queue;
 
 public class _111MinDepthBT {
     public int minDepth(TreeNode root) {
-        int depth = 1;
         if (root == null) return 0;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        q.add(null);
-        while(q.size() > 1){
-            TreeNode node = q.poll();
-            if (node == null) {
-                depth += 1;
-                q.add(null);
-                continue;
-            }
-            if (node.left == null & node.right == null) return depth;
-            if (node.left != null) q.add(node.left);
-            if (node.right != null) q.add(node.right);
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        if (left == 0 || right == 0){
+            return left + right + 1;
+        }else{
+            return Math.min(left, right) + 1;
         }
-        return depth;
     }
 }
