@@ -1,25 +1,35 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class _359LoggerRateLimiter {
-    Map<String, Integer> log;
+    int[] timeBucket;
+    Set<String>[] messageSets;
 
     public _359LoggerRateLimiter () {
-        log = new HashMap<>();
+        timeBucket = new int[10];
+        messageSets = new Set[10];
+        for (int i = 0; i < messageSets.length; i += 1){
+            messageSets[i] = new HashSet<>();
+        }
     }
 
     public boolean shouldPrintMessage(int timestamp, String message) {
-        if (!log.containsKey(message)){
-            log.put(message, timestamp);
-            return true;
-        }else{
-            int prevTimestamp = log.get(message);
-            if (timestamp - prevTimestamp >= 10){
-                log.put(message, timestamp);
-                return true;
-            }else{
-                return false;
+        int idx = timestamp % 10;
+        if (timeBucket[idx] != timestamp){
+            messageSets[idx].clear();
+            timeBucket[idx] = timestamp;
+
+        }
+        for (int i = 0; i < messageSets.length; i += 1){
+            if (timestamp - timeBucket[i] < 10){
+                if (messageSets[i].contains(message)){
+                    return false;
+                }
             }
         }
+        messageSets[idx].add(message);
+        return true;
     }
 }
