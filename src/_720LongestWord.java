@@ -1,51 +1,22 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class _720LongestWord {
-    private static class TrieNode{
-        String word;
-        TrieNode[] nodes = new TrieNode[26];
-
-
-        public void insert(String str){
-            char[] chs = str.toCharArray();
-            TrieNode currNode = this;
-            for (char c: chs){
-                if (currNode.nodes[c - 'a'] == null){
-                    currNode.nodes[c - 'a'] = new TrieNode();
-                }
-                currNode = currNode.nodes[c - 'a'];
-            }
-            currNode.word = str;
-        }
-    }
-
     public String longestWord(String[] words) {
-        TrieNode root = new TrieNode();
-        for (String str: words){
-            root.insert(str);
-        }
-        root.word = "";
-        Queue<TrieNode> q = new LinkedList<>();
-        q.add(root);
-        q.add(null);
-        String res = "";
-        while(q.size() > 1){
-            TrieNode node = q.poll();
-            if (node == null){
-                q.add(null);
-                continue;
-            }
-            for (TrieNode n_ : node.nodes){
-                if (n_ != null && n_.word != null){
-                    q.add(n_);
+        public String longestWord(String[] words) {
+            Set<String> set = new HashSet<>();
+            Arrays.sort(words);
+            String ans = "";
+            for (String str: words){
+                if (str.length() == 1 || set.contains(str.substring(0, str.length() - 1))){
+                    set.add(str);
+                    if (str.length() > ans.length()){
+                        ans = str;
+                    }
                 }
             }
-            if ((node.word.length() > res.length()) ||
-                    ((node.word.length() == res.length()) && node.word.compareTo(res) < 0)){
-                res = node.word;
-            }
+            return ans;
         }
-        return res;
     }
 }
