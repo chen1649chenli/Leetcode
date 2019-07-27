@@ -1,24 +1,17 @@
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class _1005MaximizeSum {
     public int largestSumAfterKNegations(int[] A, int K) {
-        Arrays.sort(A);
-        int i, sum = 0;
-        for (i = 0; i < A.length; i += 1){
-            if (A[i] >= 0 || K == 0) break;
-            if (A[i] < 0 && K > 0){
-                A[i] = -A[i];
-                K -= 1;
-            }
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int sum = 0;
+        for (int i : A){
+            pq.add(i);
+            sum += i;
         }
-        if (K > 0 && K % 2 == 1){
-            Arrays.sort(A);
-            A[0] = -A[0];
-        }
-
-        for (int j: A){
-            sum += j;
+        while(K-- > 0){
+            int num = pq.poll();
+            sum = sum - 2 * num;
+            pq.add(-num);
         }
         return sum;
     }
