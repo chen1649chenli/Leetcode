@@ -7,10 +7,9 @@ public class _265PaintHouseII {
 
         for (int i = 0; i < n; i += 1){
             int prev1 = min1, prev2 = min2;
-            min1 = -1;
-            min2 = -1;
+            min1 = -1; min2 = -1;
             for (int j = 0; j < k; j += 1){
-                if (j != min1){
+                if (j != prev1){
                     costs[i][j] += (prev1 < 0) ? 0: costs[i - 1][prev1] ;
                 } else{
                     costs[i][j] += (prev2 < 0) ? 0: costs[i - 1][prev2] ;
