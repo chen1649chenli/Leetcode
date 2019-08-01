@@ -1,31 +1,26 @@
 public class _005LongestPalindromicSubstring {
+    int lo, maxLen;
+
     public String longestPalindrome(String s) {
-        if (s.length() == 0) return null;
-        int n = s.length();
-        int[][] matrix = new int[n][n];
-        for (int t = 0; t < n; t += 1){
-            matrix[t][t] = 1;
+        if (s.length() < 2) return s;
+        int len = s.length();
+        for (int i = 0; i < len - 1; i += 1){
+            expand(s, i, i);
+            expand(s, i, i + 1);
         }
-        String ans = s.substring(0,1);
-        for (int layer = 1; layer < n; layer++){
-            for (int x = 0; x < n - layer; x++){
-                int y = x + layer;
-                if (s.charAt(x) == s.charAt(y)){
-                    if (x + 1 == y){
-                        matrix[x][y] = 2;
-                    }else if (matrix[x+1][y-1] > 0){
-                        matrix[x][y] = matrix[x+1][y-1] + 2;
-                    } else{
-                        matrix[x][y] = 0;
-                    }
-                }else{
-                    matrix[x][y] = 0;
-                }
-                if (matrix[x][y] > ans.length()){
-                    ans = s.substring(x, y + 1);
-                }
-            }
+
+        return s.substring(lo, lo + maxLen);
+
+    }
+
+    private void expand(String s, int i, int j){
+        while( i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)){
+            i -= 1;
+            j += 1;
         }
-        return ans;
+        if (j - i - 1 > maxLen){
+            maxLen = j - i  -1;
+            lo = i + 1;
+        }
     }
 }
