@@ -1,32 +1,21 @@
 public class _647PalindromicSubstrings {
+    int count;
+
     public int countSubstrings(String s) {
         if (s.length() < 2) return s.length();
         int n = s.length();
         boolean[][] matrix = new boolean[n][n];
-        for (int i = 0; i < n; i += 1){
-            matrix[i][i] = true;
+        for (int i = 0; i < n; i++){
+            expand(s, matrix, i, i);
+            expand(s, matrix, i, i + 1);
         }
-        for (int layer = 1; layer < n; layer ++){
-            for (int x = 0; x < n - layer; x++){
-                int y = x + layer;
-                if (s.charAt(x) == s.charAt(y)){
-                    if (y == x + 1){
-                        matrix[x][y] = true;
-                    }else if (y > x + 1 && matrix[x+1][y-1] == true){
-                        matrix[x][y] = true;
-                    }
-                }
-            }
+        return count;
+    }
+    private void expand(String s, boolean[][] m, int i, int j){
+        while(i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)){
+            m[i][j] = true;
+            count++;
+            i--; j++;
         }
-        int count = 0;
-        for (int x = 0; x < n; x ++){
-            for (int y = x; y < n; y ++){
-                if (matrix[x][y]) {
-                    count++;
-                    System.out.println("x, y: " + x + " " + y);
-                }
-            }
-        }
-        return count++;
     }
 }
