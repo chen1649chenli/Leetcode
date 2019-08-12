@@ -2,27 +2,19 @@ import java.util.*;
 
 public class _078Subsets {
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
-        if (nums == null || nums.length == 0) return ans;
-        Queue<List<Integer>> q = new LinkedList<>();
-        q.add(new ArrayList<>());
-        q.add(null);
+        List<List<Integer>> list = new ArrayList<>();
+        if (nums == null || nums.length == 0) return list;
+        Arrays.sort(nums);
+        backtrack(list, nums, new ArrayList<>(), 0 );
+        return list;
+    }
 
-        for (int i = 0; i < nums.length; i++){
-            if (q.peek() == null) q.poll();
-            while(q.peek() != null){
-                List<Integer> list = q.poll();
-                q.add(new ArrayList<>(list));
-                list.add(nums[i]);
-                q.add(new ArrayList<>(list));
-            }
-            q.add(null);
+    private void backtrack(List<List<Integer>> list, int[] nums, List<Integer> tempList, int start){
+        list.add(new ArrayList<>(tempList));
+        for (int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            backtrack(list, nums, tempList, i + 1);
+            tempList.remove(tempList.size() - 1);
         }
-        for (List<Integer> list: q){
-            if (list != null){
-                ans.add(list);
-            }
-        }
-        return ans;
     }
 }
