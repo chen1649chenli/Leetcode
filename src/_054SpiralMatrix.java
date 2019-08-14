@@ -5,48 +5,29 @@ public class _054SpiralMatrix {
     public List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> ans = new ArrayList<>();
         if (matrix == null || matrix.length == 0) return ans;
-        int m = matrix.length;
-        int n = matrix[0].length;
-        boolean[][] visited = new boolean[m][n];
-        loop(ans, matrix, visited, 0, 0, 0);
-        return ans;
-    }
+        int left = 0, top = 0;
+        int right = matrix[0].length - 1;
+        int bottom = matrix.length - 1;
+        int total = (right + 1) * (bottom + 1);
 
-    private void loop(List<Integer> ans, int[][] matrix, boolean[][] visited, int i, int j, int dir){
-        ans.add(matrix[i][j]);
-        visited[i][j] = true;
-        if(dir == 0){
-            if (j < matrix[0].length - 1 && !visited[i][j+1]){
-                loop(ans, matrix, visited, i, j + 1, 0);
-            }else if (i < matrix.length - 1 && !visited[i + 1][j]){
-                loop(ans, matrix, visited, i + 1, j , 1);
-            }else{
-                return;
+        while(ans.size() < total){
+            for (int i = left; ans.size() < total && i <= right; i++){
+                ans.add(matrix[top][i]);
             }
-        }else if(dir == 1){
-            if (i < matrix.length - 1 && !visited[i + 1][j]){
-                loop(ans, matrix, visited, i + 1, j, 1);
-            }else if (j > 0 && !visited[i][j - 1]){
-                loop(ans, matrix, visited, i, j - 1, 2);
-            }else{
-                return;
+
+            for (int i = top + 1; ans.size() < total && i <= bottom; i++){
+                ans.add(matrix[i][right]);
             }
-        }else if (dir == 2){
-            if (j > 0 && !visited[i][j - 1]){
-                loop(ans, matrix, visited, i, j - 1, 2);
-            }else if (i > 0 && !visited[i - 1][j]){
-                loop(ans, matrix, visited, i - 1, j, 3);
-            }else{
-                return;
+
+            for (int i = right - 1; ans.size() < total && i >= left; i--){
+                ans.add(matrix[bottom][i]);
             }
-        }else if (dir == 3){
-            if (i > 0 && !visited[i - 1][j]){
-                loop(ans, matrix, visited, i - 1, j, 3);
-            }else if (j < matrix[0].length - 1 && !visited[i][j+1]) {
-                loop(ans, matrix, visited, i, j + 1, 0);
-            }else{
-                return;
+
+            for (int i = bottom - 1; ans.size() < total && i >= top + 1; i--){
+                ans.add(matrix[i][left]);
             }
+            left++; right--; top++; bottom--;
         }
+        return ans;
     }
 }
