@@ -6,7 +6,7 @@ public class _362DesignHitCounter {
     int[] times;
 
     /** Initialize your data structure here. */
-    public HitCounter() {
+    public _362DesignHitCounter() {
         hitCount = new int[300];
         times = new int[300];
     }
