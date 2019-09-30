@@ -4,35 +4,25 @@ public class _103BinaryTreeZigZagLevelOrderTraversal {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
         if (root == null) return ans;
-
         Queue<TreeNode> q = new LinkedList<>();
-        Stack<TreeNode> stack = new Stack<>();
         q.offer(root);
-        q.offer(null);
         List<Integer> list = new ArrayList<>();
-        int count = 0;
+        boolean zigzag = false;
         while(q.size() > 0){
-            TreeNode node = q.poll();
-            if (node == null){
-                count += 1;
-                ans.add(new ArrayList(list));
-                list = new ArrayList<>();
-                if(stack.isEmpty()) break;
-                while(!stack.isEmpty()){
-                    q.offer(stack.pop());
-                }
-                q.offer(null);
-                continue;
-            }else{
-                list.add(node.val);
-                if (count % 2 == 0){
-                    if (node.left != null) stack.push(node.left);
-                    if (node.right != null) stack.push(node.right);
+            int cnt = q.size();
+            list = new ArrayList<>();
+            for (int i = 0; i < cnt; i +=1){
+                TreeNode node = q.poll();
+                if (zigzag){
+                    list.add(0, node.val);
                 }else{
-                    if(node.right != null) stack.push(node.right);
-                    if(node.left != null) stack.push(node.left);
+                    list.add(node.val);
                 }
+                if (node.left != null) q.offer(node.left);
+                if (node.right != null) q.offer(node.right);
             }
+            zigzag = !zigzag;
+            ans.add(new ArrayList(list));
         }
         return ans;
     }
