@@ -17,30 +17,28 @@ public class _426ConvertBinarySearchTreeToSortedDoublyLinkedList {
             right = _right;
         }
     }
-    
+
     public Node treeToDoublyList(Node root) {
         if (root == null) return null;
+        Node dummy = new Node();
+        Node prev = dummy;
+
         Deque<Node> stack = new ArrayDeque<>();
-        Queue<Node> q = new LinkedList<>();
         while(root != null || !stack.isEmpty()){
             while(root != null){
                 stack.push(root);
                 root = root.left;
             }
             root = stack.pop();
-            q.offer(root);
+            prev.right = root;
+            root.left = prev;
+            prev = root;
             root = root.right;
         }
-        Node head = q.poll();
-        Node prev = null, curr = head;
-        while(!q.isEmpty()){
-            prev = curr;
-            curr = q.poll();
-            curr.left = prev;
-            prev.right = curr;
-        }
-        curr.right = head;
-        head.left = curr;
+        Node head = dummy.right;
+        prev.right = head;
+        head.left = prev;
+
         return head;
     }
 }
